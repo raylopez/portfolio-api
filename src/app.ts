@@ -1,0 +1,39 @@
+import express, { type Request, type Response } from 'express'
+import { userRoutes } from './routes/user.js'
+import * as dotenv from 'dotenv'
+import { sequelize } from './database/sequelize.ts'
+import { candidateRoutes } from './routes/candidate.ts'
+
+dotenv.config()
+
+const port = process.env.PORT ?? 3000
+
+const app = express()
+app.use(express.json())
+
+const main = async () => {
+  try {
+    await sequelize.sync()
+    console.log('Base de datos inicializada');
+    
+    app.listen(port, () => {
+      console.log(`Escuchando api en http://localhost:${port}`);
+    })
+  } catch (error) {
+    console.error('Error al iniciar BD', error);
+  }
+}
+
+main();
+
+app.get('/', async (_, res: Response) => {
+  res.send('<h1>Bienvenido a la API</h1>')
+})
+
+//Routes
+app.use('/users',userRoutes)
+app.use('/candidates',candidateRoutes)
+
+app.use('/', (_, res: Response) => {
+  res.status(404).send('<h1>Pagina no encontrada</h1>')
+})
