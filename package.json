@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --watch src/app.ts"
+    "dev": "tsx --env-file .env --watch src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,6 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "morgan": "^1.10.1",
     "pg": "^8.20.0",

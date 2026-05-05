@@ -1,10 +1,8 @@
 import { Sequelize } from 'sequelize-typescript'
-import * as dotenv from 'dotenv'
 import { Candidate, CandidateExperience, SocialItem, User } from './schema.ts'
+import { POSTGRES_URL } from '../config.ts'
 
-dotenv.config()
-
-export const sequelize = new Sequelize(process.env.POSTGRES_URL!, {
+export const sequelize = new Sequelize(POSTGRES_URL!, {
     dialect: 'postgres',
     ssl: true,
     models: [

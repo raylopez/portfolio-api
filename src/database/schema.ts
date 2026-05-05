@@ -57,7 +57,7 @@ export class User extends Model {
 export class Candidate extends Model {
   @IsUUID(4)
   @PrimaryKey
-  @Default(DataType.UUID)
+  @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   declare id?: string;
 

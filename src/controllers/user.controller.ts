@@ -13,6 +13,7 @@ export class UserController {
     const { id } = req.params;
     const userFound = await User.findByPk(id);
     if (!userFound) return res.status(404).send({ message: "User not found" });
+    
     res.send(userFound);
   };
 

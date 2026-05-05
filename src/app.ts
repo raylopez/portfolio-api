@@ -1,12 +1,12 @@
-import express, { type Request, type Response } from 'express'
+import express, { type Response } from 'express'
 import { userRoutes } from './routes/user.js'
-import * as dotenv from 'dotenv'
 import { sequelize } from './database/sequelize.ts'
 import { candidateRoutes } from './routes/candidate.ts'
+import { PORT } from './config.ts'
+import { errorMiddleware } from './middlewares/error.middleware.ts'
 
-dotenv.config()
 
-const port = process.env.PORT ?? 3000
+const port = PORT ?? 3000
 
 const app = express()
 app.use(express.json())
@@ -33,6 +33,9 @@ app.get('/', async (_, res: Response) => {
 //Routes
 app.use('/users',userRoutes)
 app.use('/candidates',candidateRoutes)
+
+//Middlewares
+app.use(errorMiddleware)
 
 app.use('/', (_, res: Response) => {
   res.status(404).send('<h1>Pagina no encontrada</h1>')
