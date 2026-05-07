@@ -2,8 +2,10 @@ import express, { type Response } from 'express'
 import { userRoutes } from './routes/user.js'
 import { sequelize } from './database/sequelize.ts'
 import { candidateRoutes } from './routes/candidate.ts'
+import { router as socialItemRouter } from './routes/social-item.ts'
 import { PORT } from './config.ts'
 import { errorMiddleware } from './middlewares/error.middleware.ts'
+import { candidateExperienceRoutes } from './routes/candidate-experience.ts'
 
 
 const port = PORT ?? 3000
@@ -33,6 +35,8 @@ app.get('/', async (_, res: Response) => {
 //Routes
 app.use('/users',userRoutes)
 app.use('/candidates',candidateRoutes)
+app.use('/candidate-experience', candidateExperienceRoutes)
+app.use('/social-item', socialItemRouter)
 
 //Middlewares
 app.use(errorMiddleware)

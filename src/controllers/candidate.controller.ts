@@ -1,44 +1,79 @@
-import type { Request, Response } from 'express'
-import { Candidate } from '../database/schema.ts'
+import { Candidate, CandidateExperience, ExperienceType } from '../database/schema.ts'
 import { type CandidateSchema } from '../models/schema.ts'
+import { CandidateModel } from '../model/candidate.ts'
+import type { EndPointAsync, EndPointCreateAsync, EndPointUpdateAsync, EndPointWithIdAsync } from '../definitions/endpoints.ts'
+
 
 export class CandidateController {
-    static getAll = async (_req: Request, res: Response) => {
-        const candidates = await Candidate.findAll()
+    static getAll: EndPointAsync = async (_, res) => {
+        const candidates = await CandidateModel.getAll()
         res.json(candidates)
     }
-    static getById = async (req: Request<{id: string}>, res: Response) => {
+    static getById: EndPointWithIdAsync = async (req, res) => {
         const { id } = req.params
-        const candidate = await Candidate.findByPk(id)
+        const candidate = await CandidateModel.getById(id)
         if (!candidate) {
-            return res.status(400).json({ message: 'candidato no encontrado' })
+            res.status(404).json({ message: 'candidato no encontrado' })
+            return
         }
         
         res.send(candidate)
     }
-    static create = async (req: Request<{},{},CandidateSchema>, res: Response) => {
-        const candidateCreate = await Candidate.create(req.body);
-        if (!candidateCreate) return res.status(400).json({ message: 'candidate no created' })
-        
-        res.status(201).send({ message: 'candidato creado con éxito' })
+    static getOne: EndPointAsync = async (req, res) => {
+        const candidate = await CandidateModel.getOne()
+        if (!candidate) {
+            res.status(404).json({ message: 'No hay ningún candidato' })
+            return
+        }
+
+        const { name, lastName, about, position, socialStatus, email, phone, resumeUrl, skills, softSkills,socials, experiences } = candidate
+        const candidateMap = {
+            name,
+            lastName,
+            about,
+            position,
+            socialStatus,
+            email,
+            phone,
+            resumeUrl,
+            skills,
+            softSkills,
+            socials,            
+            education: experiences.filter(x=>x.type == ExperienceType.Education),
+            experenceJobs: experiences.filter(x=>x.type == ExperienceType.Job),
+        };
+
+        res.json(candidateMap)
     }
-    static update = async (req: Request<{id: string},{},CandidateSchema>, res: Response) => {
+    static getExperiencesByCandidate:EndPointWithIdAsync = async (req, res) => {
         const { id } = req.params
-        const { name, lastName, phone, email } = req.body
-        const result = await Candidate.update({  name, lastName, phone, email},
-            { where:{ id: id } })
+        const experiences = await CandidateExperience.findAll({ where: { candidateId: id } })
+        
+        res.send(experiences)
+    }
+    static create:EndPointCreateAsync<CandidateSchema> = async (req, res) => {
+        const candidateCreate = await CandidateModel.create(req.body)
+        res.status(201).json(candidateCreate)
+    }
+    static update: EndPointUpdateAsync<CandidateSchema> = async (req, res) => {
+        const { id } = req.params
+        const result = await CandidateModel.update(id, req.body)
         const [affectedRows] = result
         if (affectedRows < 1) {
-            return res.status(400).json({ message: 'No se pudo actualizar el candidato' })
+            res.status(400).json({ message: 'No se pudo actualizar el candidato' })
+            return 
         }
 
         res.send({ message: 'Candidato actualizado' })
     }
-    static delete = async (req: Request<{id: string}>, res: Response) => {
-        res.send('obteniendo candidatos')
-    }
-    static addExperienceToCandidate = async (req: Request<{id: string}, {},{name: string, dateStart: Date, dateEnd: Date}>, res: Response) => {
+    static delete:EndPointWithIdAsync = async (req, res): Promise<void> => {
         const { id } = req.params
-        res.status(201).json({ message: 'created' })
+        const result = await Candidate.destroy({ where: {  id } })
+        if (result > 0) {
+            res.send('elimiando candidato')
+            return
+        }
+
+        res.status(400).json({ message: 'no se pudo eliminar el candidato' })
     }
 }

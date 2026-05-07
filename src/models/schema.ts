@@ -16,11 +16,11 @@ const UserSchema = z.object({
 export type UserSchema = z.infer<typeof UserSchema>;
 export type UserUpdateSchema = Omit<UserSchema, 'password'>;
 
-const CandidateSchema = z.object({
+export const CandidateSchema = z.object({
     name: z.string().min(2).max(100),
     lastName: z.string().min(2).max(100),
     position: z.string().min(2).max(100),
-    about: z.string().min(2).max(200),
+    about: z.string().min(2).max(300),
     phone: z.string().regex(new RegExp('')).min(2).max(14),
     email: z.email(),
     resumeUrl: z.string(),
@@ -50,8 +50,8 @@ export const validateCandidate = (input: any, isPartial: boolean = false) => {
 export const CandidateExperienceSchema = z.object({
     name: z.string(),
     description: z.string().max(250),
-    periodStart: z.date(),
-    periodEnd: z.date(),
+    periodStart: z.coerce.date(),
+    periodEnd: z.coerce.date(),
     type: z.enum([ExperienceType.Education, ExperienceType.Job]),
     technologies: z.array(z.string()),
     degree: z.string(),
@@ -64,5 +64,19 @@ export type CandidateExperienceSchema = z.infer<typeof CandidateExperienceSchema
 export const validateCandidateExperience = (input: any, isPartial: boolean = false) => {
     const result = isPartial ? CandidateExperienceSchema.partial().safeParse(input) : CandidateExperienceSchema.safeParse(input)
 
+    return result
+}
+
+export const SocialItemSchema = z.object({
+    name: z.string(),
+    url: z.url(),
+    candidateId: z.uuidv4()
+})
+
+export type SocialItem = z.infer<typeof SocialItemSchema>
+
+
+export function validateSchema<T extends z.ZodObject>(schema: T, input: unknown, isPartial: boolean = false) {
+    const result = isPartial ? schema.partial().safeParse(input) : schema.safeParse(input)
     return result
 }

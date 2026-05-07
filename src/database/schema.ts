@@ -74,7 +74,8 @@ export class Candidate extends Model {
   @Column(DataType.STRING)
   position!: string;
 
-  @Column(DataType.STRING)
+  @Length({ max: 500 })
+  @Column(DataType.TEXT)
   about!: string;
 
   @Column(DataType.STRING)
@@ -103,7 +104,7 @@ export class Candidate extends Model {
   softSkills!: string[];
 
   @HasMany(() => CandidateExperience)
-  experience!: Array<CandidateExperience>;
+  experiences!: Array<CandidateExperience>;
 
   @HasMany(() => SocialItem)
   socials!: SocialItem[];
@@ -113,7 +114,7 @@ export class Candidate extends Model {
 export class CandidateExperience extends Model {
   @IsUUID(4)
   @PrimaryKey
-  @Default(DataType.UUID)
+  @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   declare id: string;
 
@@ -162,7 +163,7 @@ export class CandidateExperience extends Model {
 export class SocialItem extends Model {
   @IsUUID(4)
   @PrimaryKey
-  @Default(DataType.UUID)
+  @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   declare id: string;
 
