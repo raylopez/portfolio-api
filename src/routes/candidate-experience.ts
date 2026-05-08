@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { CandidateExperienceController } from "../controllers/candidate-experience.controller.ts";
-import { candidateExperienceMiddleware } from "../middlewares/candidate.middleware.ts";
+import { validationMiddleware } from "../middlewares/validation.middleware.ts";
+import { CandidateExperienceSchema } from "../models/schema.ts";
 
 export const candidateExperienceRoutes = Router();
-candidateExperienceRoutes.post('/', candidateExperienceMiddleware, CandidateExperienceController.create)
-candidateExperienceRoutes.patch('/:id', candidateExperienceMiddleware, CandidateExperienceController.update)
+candidateExperienceRoutes.post('/', validationMiddleware(CandidateExperienceSchema), CandidateExperienceController.create)
+candidateExperienceRoutes.patch('/:id', validationMiddleware(CandidateExperienceSchema), CandidateExperienceController.update)

@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import { ExperienceType, SocialStatus } from '../database/schema.ts';
 
-const UserSchema = z.object({
+export const UserSchema = z.object({
     name: z
         .string('el nombre es requerido')
         .max(100)

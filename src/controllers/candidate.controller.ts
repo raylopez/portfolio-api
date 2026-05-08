@@ -1,7 +1,8 @@
-import { Candidate, CandidateExperience, ExperienceType } from '../database/schema.ts'
+import { ExperienceType } from '../database/schema.ts'
 import { type CandidateSchema } from '../models/schema.ts'
 import { CandidateModel } from '../model/candidate.ts'
 import type { EndPointAsync, EndPointCreateAsync, EndPointUpdateAsync, EndPointWithIdAsync } from '../definitions/endpoints.ts'
+import { CandidateExperienceModel } from '../model/candidate-experience.ts'
 
 
 export class CandidateController {
@@ -19,7 +20,7 @@ export class CandidateController {
         
         res.send(candidate)
     }
-    static getOne: EndPointAsync = async (req, res) => {
+    static getOne: EndPointAsync = async (_, res) => {
         const candidate = await CandidateModel.getOne()
         if (!candidate) {
             res.status(404).json({ message: 'No hay ningún candidato' })
@@ -47,7 +48,7 @@ export class CandidateController {
     }
     static getExperiencesByCandidate:EndPointWithIdAsync = async (req, res) => {
         const { id } = req.params
-        const experiences = await CandidateExperience.findAll({ where: { candidateId: id } })
+        const experiences = await CandidateExperienceModel.findByCandidateId(id)
         
         res.send(experiences)
     }
@@ -66,11 +67,11 @@ export class CandidateController {
 
         res.send({ message: 'Candidato actualizado' })
     }
-    static delete:EndPointWithIdAsync = async (req, res): Promise<void> => {
+    static delete:EndPointWithIdAsync = async (req, res) => {
         const { id } = req.params
-        const result = await Candidate.destroy({ where: {  id } })
+        const result = await CandidateModel.delete(id)
         if (result > 0) {
-            res.send('elimiando candidato')
+            res.sendStatus(204)
             return
         }
 

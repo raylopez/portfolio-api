@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { userMiddleware } from "../middlewares/user.middleware.ts";
 import { UserController } from "../controllers/user.controller.ts";
+import { validationMiddleware } from "../middlewares/validation.middleware.ts";
+import { UserSchema } from "../models/schema.ts";
 
 export const userRoutes: Router = Router()
 
 userRoutes.get('/', UserController.getAll)
 userRoutes.get('/:id', UserController.getById)
-userRoutes.post('/', userMiddleware, UserController.createUser)
-userRoutes.put('/:id', userMiddleware, UserController.updateUser)
+userRoutes.post('/', validationMiddleware(UserSchema), UserController.createUser)
+userRoutes.patch('/:id', validationMiddleware(UserSchema), UserController.updateUser)

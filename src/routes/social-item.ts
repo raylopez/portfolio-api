@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { SocialItemController } from "../controllers/social-item.controller.ts";
-import { validationMiddleware } from "../middlewares/candidate.middleware.ts";
+import { validationMiddleware } from "../middlewares/validation.middleware.ts";
 import { SocialItemSchema } from "../models/schema.ts";
 
 export const router = Router()

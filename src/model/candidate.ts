@@ -31,4 +31,8 @@ export class CandidateModel {
     static update = (id: string, input: CandidateSchema) => {
         return Candidate.update(input, { where: { id } })
     }
+
+    static delete = (id: string) => {
+        return Candidate.destroy({ where: { id } })
+    }
 }
