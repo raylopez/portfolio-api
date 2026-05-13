@@ -6,12 +6,13 @@ import { router as socialItemRouter } from './routes/social-item.ts'
 import { PORT } from './config.ts'
 import { errorMiddleware } from './middlewares/error.middleware.ts'
 import { candidateExperienceRoutes } from './routes/candidate-experience.ts'
-
+import cors from 'cors'
 
 const port = PORT ?? 3000
 
 const app = express()
 app.use(express.json())
+app.use(cors({ origin: 'http://localhost:4200', methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'] }))
 
 const main = async () => {
   try {
