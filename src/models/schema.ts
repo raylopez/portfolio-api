@@ -24,6 +24,7 @@ export const CandidateSchema = z.object({
     phone: z.string().regex(new RegExp('')).min(2).max(14),
     email: z.email(),
     resumeUrl: z.string(),
+    profilePhotoPath: z.string(),
     socialStatus: z.enum([
         SocialStatus.Single,
         SocialStatus.Married, 

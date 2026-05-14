@@ -27,7 +27,7 @@ export class CandidateController {
             return
         }
 
-        const { name, lastName, about, position, socialStatus, email, phone, resumeUrl, skills, softSkills,socials, experiences } = candidate
+        const { name, lastName, about, position, socialStatus, email, phone, resumeUrl, profilePhotoPath, skills, softSkills,socials, experiences } = candidate
         const candidateMap = {
             name,
             lastName,
@@ -37,6 +37,7 @@ export class CandidateController {
             email,
             phone,
             resumeUrl,
+            profilePhotoPath,
             skills,
             softSkills,
             socials,            

@@ -87,6 +87,9 @@ export class Candidate extends Model {
   @Column(DataType.STRING)
   resumeUrl!: string;
 
+  @Column(DataType.STRING)
+  profilePhotoPath!: string;
+
   @Default(SocialStatus.Single)
   @Column(DataType.ENUM(
     SocialStatus.Single, 
