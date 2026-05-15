@@ -10,5 +10,11 @@ export const sequelize = new Sequelize(POSTGRES_URL!, {
         Candidate,
         CandidateExperience,
         SocialItem
-    ]
+    ],
+    benchmark: true,
+    logging: (sql,timing) => {
+        console.log(`Executed SQL: ${sql} in ${timing}`)
+        if (timing)
+            console.log(`Time taken ${timing}ms`);
+    }
 })

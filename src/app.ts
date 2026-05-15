@@ -7,10 +7,12 @@ import { PORT } from './config.ts'
 import { errorMiddleware } from './middlewares/error.middleware.ts'
 import { candidateExperienceRoutes } from './routes/candidate-experience.ts'
 import cors from 'cors'
+import morgan from 'morgan'
 
 const port = PORT ?? 3000
 
 const app = express()
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors({ origin: 'http://localhost:4200', methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'] }))
 
