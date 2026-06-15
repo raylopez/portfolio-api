@@ -32,8 +32,8 @@ export const CandidateSchema = z.object({
         SocialStatus.Divorced,
         SocialStatus.Separated,
     ]),
-    skills: z.array(z.string()),
-    softSkills: z.array(z.string()),
+    skills: z.array(z.string()).transform(s => s.join(',')),
+    softSkills: z.array(z.string()).transform(s => s.join(',')),
 })
 
 export type CandidateSchema = z.infer<typeof CandidateSchema>
@@ -54,7 +54,7 @@ export const CandidateExperienceSchema = z.object({
     periodStart: z.coerce.date(),
     periodEnd: z.coerce.date(),
     type: z.enum([ExperienceType.Education, ExperienceType.Job]),
-    technologies: z.array(z.string()),
+    technologies: z.array(z.string()).transform(t=>t.join(',')),
     degree: z.string(),
     link: z.url(),
     candidateId: z.uuid({ version: 'v4' })

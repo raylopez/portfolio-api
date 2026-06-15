@@ -1,4 +1,4 @@
-import { ExperienceType } from '../database/schema.ts'
+import { CandidateExperience, ExperienceType } from '../database/schema.ts'
 import { type CandidateSchema } from '../models/schema.ts'
 import { CandidateModel } from '../model/candidate.ts'
 import type { EndPointAsync, EndPointCreateAsync, EndPointUpdateAsync, EndPointWithIdAsync } from '../definitions/endpoints.ts'
@@ -38,15 +38,31 @@ export class CandidateController {
             phone,
             resumeUrl,
             profilePhotoPath,
-            skills,
-            softSkills,
+            skills: skills.split(','),
+            softSkills: softSkills.split(','),
             socials,            
-            education: experiences.filter(x=>x.type == ExperienceType.Education),
-            experenceJobs: experiences.filter(x=>x.type == ExperienceType.Job),
+            education: experiences.filter(x=>x.type == ExperienceType.Education)
+                .map(this.experienceMap),
+            experenceJobs: experiences.filter(x=>x.type == ExperienceType.Job)
+                .map(this.experienceMap),
         };
 
         res.json(candidateMap)
     }
+
+    private static experienceMap (experience: CandidateExperience) {
+        return {
+                    name: experience.name,
+                    description: experience.description,
+                    periodStart: experience.periodStart,
+                    periodEnd: experience.periodEnd,
+                    link: experience.link,
+                    degree: experience.degree,
+                    technologies: experience.technologies.split(','),
+                    type: experience.type
+                }
+    }
+
     static getExperiencesByCandidate:EndPointWithIdAsync = async (req, res) => {
         const { id } = req.params
         const experiences = await CandidateExperienceModel.findByCandidateId(id)

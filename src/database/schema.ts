@@ -100,11 +100,11 @@ export class Candidate extends Model {
   ))
   socialStatus!: SocialStatus;
 
-  @Column(DataType.ARRAY(DataType.STRING))
-  skills!: string[];
+  @Column(DataType.STRING)
+  skills!: string;
 
-  @Column(DataType.ARRAY(DataType.STRING))
-  softSkills!: string[];
+  @Column(DataType.STRING)
+  softSkills!: string;
 
   @HasMany(() => CandidateExperience)
   experiences!: Array<CandidateExperience>;
@@ -142,8 +142,8 @@ export class CandidateExperience extends Model {
   @Column(DataType.TEXT)
   description!: string;
 
-  @Column(DataType.ARRAY(DataType.STRING))
-  technologies!: string[];
+  @Column(DataType.STRING)
+  technologies!: string;
 
   @Column(DataType.TEXT)
   link!: string;

@@ -2,9 +2,9 @@
   "name": "portfolio-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/index.ts",
   "scripts": {
-    "dev": "tsx --env-file .env --watch src/app.ts"
+    "dev": "tsx --env-file .env --watch api/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
+    "@sequelize/sqlite3": "7.0.0-alpha.48",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "morgan": "^1.10.1",
@@ -30,6 +31,7 @@
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.8",
     "sequelize-typescript": "^2.1.6",
+    "sqlite3": "^6.0.1",
     "zod": "^4.3.6"
   }
 }

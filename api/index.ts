@@ -1,17 +1,17 @@
-import express, { type Response } from 'express'
-import { userRoutes } from './routes/user.js'
-import { sequelize } from './database/sequelize.ts'
-import { candidateRoutes } from './routes/candidate.ts'
-import { router as socialItemRouter } from './routes/social-item.ts'
-import { PORT } from './config.ts'
-import { errorMiddleware } from './middlewares/error.middleware.ts'
-import { candidateExperienceRoutes } from './routes/candidate-experience.ts'
+import express, { type Response, type Express } from 'express'
+import { userRoutes } from '../src/routes/user.ts'
+import { sequelize } from '../src/database/sequelize.ts'
+import { candidateRoutes } from '../src/routes/candidate.ts'
+import { router as socialItemRouter } from '../src/routes/social-item.ts'
+import { PORT } from '../src/config.ts'
+import { errorMiddleware } from '../src/middlewares/error.middleware.ts'
+import { candidateExperienceRoutes } from '../src/routes/candidate-experience.ts'
 import cors from 'cors'
 import morgan from 'morgan'
 
 const port = PORT ?? 3000
 
-const app = express()
+const app: Express = express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors({ origin: 'http://localhost:4200', methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'] }))
@@ -47,3 +47,4 @@ app.use(errorMiddleware)
 app.use('/', (_, res: Response) => {
   res.status(404).send('<h1>Pagina no encontrada</h1>')
 })
+export default app
